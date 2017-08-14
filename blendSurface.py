@@ -24,6 +24,7 @@ class blendSurface:
         self.railSamples = 20
         self.profSamples = 20
         self.untwist = False
+        self.binormalDir = True
         self.curves = []
 
     def buildCurves(self):
@@ -36,10 +37,12 @@ class blendSurface:
             pt1 = self.cos1.valueAt(t1)
             pt2 = self.cos2.valueAt(t2)
             chord = pt2.sub(pt1).Length
-        #    ip1 = cos1.tangentTo(t1,pt2)[0]
-        #    ip2 = cos2.tangentTo(t2,pt1)[0]
-            ip1 = self.cos1.binormalAt(t1)
-            ip2 = self.cos2.binormalAt(t2)
+            if self.binormalDir == True:
+                ip1 = self.cos1.binormalAt(t1)
+                ip2 = self.cos2.binormalAt(t2)
+            else:
+                ip1 = self.cos1.tangentTo(t1,pt2)
+                ip2 = self.cos2.tangentTo(t2,pt1)
             ip1.normalize().multiply(chord / 3.0)
             ip2.normalize().multiply(chord / 3.0)
             poles = [pt1, pt1.add(ip1), pt2.add(ip2), pt2]
@@ -93,6 +96,7 @@ def main():
     bs.railSamples = 32
     bs.profSamples = 16
     bs.untwist = False
+    bs.binormalDir = True
     
     bs.buildCurves()
     pts = bs.getPoints()

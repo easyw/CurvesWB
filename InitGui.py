@@ -17,7 +17,7 @@ class CurvesWorkbench (Workbench):
         import Discretize
         import approximate
         import ParametricBlendCurve
-        import ParametricComb
+        import ParametricComb2
         import ZebraTool
         import SurfaceEdit
         import TrimFace

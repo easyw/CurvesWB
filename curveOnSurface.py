@@ -113,19 +113,28 @@ class curveOnSurface:
             return(None)
 
     def tangentTo(self, t, pt):
+        res = FreeCAD.Vector(0,0,1)
         v = self.valueAt(t)
         n = self.normalAt(t)
         tanPlane = Part.Plane(v,n)
         line = Part.Line(pt, pt.add(n))
-        ptOnPlane = tanPlane.intersect(line)
-        res = []
-        if isinstance(ptOnPlane,tuple):
-            for el in ptOnPlane:
-                if isinstance(el,(tuple,list)):
-                    for e in el:
-                        if isinstance(e,Part.Point):
-                            res.append(FreeCAD.Vector(e.X,e.Y,e.Z).sub(v))
+        try:
+            ptOnPlane = tanPlane.intersect(line)
+            pt = ptOnPlane[0][0]
+        except:
+            print("intersect ERROR !")
+            pt = Part.Point(FreeCAD.Vector(0,0,1))
+        res = FreeCAD.Vector(pt.X,pt.Y,pt.Z).sub(v)
         return(res)
+        #res = []
+        #if isinstance(ptOnPlane,tuple):
+            #for el in ptOnPlane:
+                #if isinstance(el,(tuple,list)):
+                    #for e in el:
+                        #if isinstance(e,Part.Point):
+                            #res.append(FreeCAD.Vector(e.X,e.Y,e.Z).sub(v))
+        #print(res)
+        #return(res)
 
 
 

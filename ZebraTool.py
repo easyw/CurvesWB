@@ -53,8 +53,15 @@ class zebra(QtGui.QWidget):
         #print str( self.sg )
         
 
+        self.complexity = coin.SoComplexity()
+        self.complexity.type = coin.SoComplexity.OBJECT_SPACE
+        self.complexity.value = 1.0
+        self.complexity.textureQuality = 1.0
+        
+        self.sg.insertChild(self.complexity,0)
+
         self.stripes = coin.SoTexture2()
-        self.sg.insertChild(self.stripes,0)
+        self.sg.insertChild(self.stripes,1)
         self.stripes.filename = ""
 
         self.string = '\xff' * 50 + '\x00' * self.StripeWidth
@@ -67,20 +74,22 @@ class zebra(QtGui.QWidget):
 
         # **** here we can transform the texture
         self.transTexture = coin.SoTexture2Transform()
-        self.sg.insertChild(self.transTexture,1)
+        self.sg.insertChild(self.transTexture,2)
         #transTexture.translation.setValue(1, 1)
         self.transTexture.scaleFactor.setValue(self.Scale, self.Scale)
         self.transTexture.rotation.setValue(1. * self.Rotation / 100)
         #transTexture.center.setValue(0, .5)
 
+
         self.tc = coin.SoTextureCoordinateEnvironment()
-        self.sg.insertChild(self.tc,2)
+        self.sg.insertChild(self.tc,3)
 
     def coinQuit(self):
         #print "coinQuit"
         self.sg.removeChild(self.tc)
         self.sg.removeChild(self.transTexture)
         self.sg.removeChild(self.stripes)
+        self.sg.removeChild(self.complexity)
 
     def changeSlide_1(self, value):
         #print "Stripes width : "+str(value)

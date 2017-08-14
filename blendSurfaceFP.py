@@ -42,6 +42,7 @@ class blendSurfFP:
         obj.addProperty("App::PropertyInteger",    "ProfileSamples", "Base",   "Profile Samples")
         obj.addProperty("App::PropertyInteger",    "RailSamples",    "Base",   "Edge Samples")
         obj.addProperty("App::PropertyBool",       "Untwist",        "Base",   "Untwist surface")
+        obj.addProperty("App::PropertyBool",       "BinormalDir",    "Base",   "Binormal Direction")
         obj.addProperty("App::PropertyVectorList", "Points",         "Base",   "Points")
         obj.addProperty("Part::PropertyPartShape", "Shape",          "Base",   "Shape")
         #obj.Blending = "Blend"
@@ -49,6 +50,7 @@ class blendSurfFP:
         obj.RailSamples = 20
         #obj.Parametrization = 0.0
         obj.Untwist = False
+        obj.BinormalDir = True
 
 
     def execute(self, obj):
@@ -59,7 +61,10 @@ class blendSurfFP:
                 bs.railSamples = obj.RailSamples
                 bs.profSamples = obj.ProfileSamples
                 bs.untwist = obj.Untwist
-                
+                if obj.BinormalDir == True:
+                    bs.binormalDir = True
+                else:
+                    bs.binormalDir = False
                 bs.buildCurves()
                 pts = bs.getPoints()
                 
